@@ -1,7 +1,6 @@
 <!DOCTYPE>
 <html>
 <head>
-	<!-- <link href="https://d27ilbh7v6ssec.cloudfront.net/chim.min.js"> -->
     <script src="../dist/chim.min.js"></script>
 </head>
 <body>
@@ -10,9 +9,9 @@
 	<script>
         chimmin();
 
-		document.getElementById('square').applyCss('background-color', 'blue');
-		ajax.get('https://api.github.com/repos/Brethren-Studios/chimsockets/releases', {}, (data) => {
+        document.getElementById('square').applyCss('background-color', 'blue');
+        ajax.get('https://api.github.com/repos/Brethren-Studios/chimsockets/releases', {}, (data) => {
             console.log(data);
-		});
+        });
 	</script>
 </body>
