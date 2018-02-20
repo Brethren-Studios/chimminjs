@@ -1,25 +1,23 @@
-# chimminjs #
+# chimminJS #
 
 ChimminJS was developed at Brethren Studios as a performant client-side library for UI management on their landing pages.
 
-A simple library for DOM manipulation and HTTP requests, ChimminJS is very lightweight and features a familiar, tidy API.
+A simple library for DOM manipulation and HTTP requests, chimminJS is very lightweight and features a familiar, tidy API.
 
-1. Do not use ChimminJS as a framework for a complicated UI.
-2. Do use ChimminJS on your simple pages to get a lot for a little.
+1. Do not use chimminJS as a framework for a complicated UI.
+2. Do use chimminJS on your simple pages to get a lot for a little.
 
 ## Getting It ##
 
-Using a content delivery network (CDN) URL to embed ChimminJS directly on your HTML page:
+Use a content delivery network (CDN) URL to embed chimminJS directly on your HTML page:
 
 ```
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chimmin.js/0.0.0/chim.min.js"></script>
+<script src="https://d27ilbh7v6ssec.cloudfront.net/chim.min.js"></script>
 ```
 
-The Source
+Download the source:
 
 *Download `src/`.*
-
-
 
 ## Basic Useage Example ##
 
@@ -37,11 +35,12 @@ ChimminJS is perfect for simple pages with a single main element--like a form, s
 ```
 
 ```javascript
-const input = document.getElementsByTagName('input');
+chimmin(); // initialize chimminJS
+const input = document.getElementsByTagName('input'); // get regular HTMLElement
 
-input.applyCss('opacity', '1'); // opacity = 1;
+input.applyCss('opacity', '1'); // apply CSS to element
 
-input.onKeyup((el) => {
+input.onKeyup((el) => { // handle events
   console.log('User input detected.');
 });
 ```
@@ -51,7 +50,6 @@ input.onKeyup((el) => {
 const getBtn = document.getElementsById('find-song');
 const postBtn = document.getElementsById('cool-song');
 
-// wait for submit
 getBtn.onClick((e) => {
   // add request params as an object or querystring
   ajax.get('/that-one-song', { song: 'Africa by Toto' }, (response) => {

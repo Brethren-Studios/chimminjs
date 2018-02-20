@@ -1,16 +1,9 @@
-export default (function() {  
-     /* DOM Lite */
-
-
-    /**
-     *
-     * @param init
-     */
+module.exports = function() {
     HTMLDocument.prototype.onReady = function onReady(init) {
         this.addEventListener('DOMContentLoaded', init);
     };
 
-    
+
     HTMLElement.prototype.addClass = function addClass(className) {
         if (!className) {
             throw Error('You must provide a class name.');
@@ -60,4 +53,4 @@ export default (function() {
     HTMLElement.prototype.onKeyup = function onKeyup(handler) {
         this.addEventListener('keyup', handler);
     };
-});
+};

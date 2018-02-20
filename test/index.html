@@ -1,0 +1,18 @@
+<!DOCTYPE>
+<html>
+<head>
+	<!-- <link href="https://d27ilbh7v6ssec.cloudfront.net/chim.min.js"> -->
+    <script src="../dist/chim.min.js"></script>
+</head>
+<body>
+	<title>ChimminJS</title>
+	<div id="square" style="width:10px;height:10px;"></div>
+	<script>
+        chimmin();
+
+		document.getElementById('square').applyCss('background-color', 'blue');
+		ajax.get('https://api.github.com/repos/Brethren-Studios/chimsockets/releases', {}, (data) => {
+            console.log(data);
+		});
+	</script>
+</body>

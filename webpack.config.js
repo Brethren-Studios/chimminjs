@@ -31,18 +31,10 @@ module.exports = {
             uglifyOptions: {
                 ecma: 6,
                 warnings: false,
-                // parse: {...options},
-                // compress: {...options},
-                mangle: {
-                    // ...options,
-                    properties: {
-                    // mangle property options
-                    }
-                },
+                mangle: false,
                 output: {
                     comments: false,
                     beautify: false
-                    // ...options
                 },
                 toplevel: false,
                 nameCache: null,
