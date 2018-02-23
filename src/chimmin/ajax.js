@@ -1,6 +1,4 @@
-const AjaxService = {
-    /* Ajax Lite */
-
+const CHIMAjax = {
     /**
      * Callback handling response body.
      *
@@ -23,7 +21,7 @@ const AjaxService = {
                     add(prefix, v);
                 } else {
                     // item is non-scalar (array or object), encode its numeric index
-                    AjaxService.buildParams(
+                    CHIMAjax.buildParams(
                         `${prefix}[${(typeof v === 'object' && v != null ? i : '')}]`,
                         v,
                         add
@@ -33,7 +31,7 @@ const AjaxService = {
         } else if (typeof obj === 'object') {
             // serialize object item
             Object.keys(obj).forEach((name) => {
-                AjaxService
+                CHIMAjax
                     .buildParams(`${prefix}[${name}]`, obj[name], add);
             });
         } else {
@@ -70,7 +68,7 @@ const AjaxService = {
         } else {
             // encode params recursively
             Object.keys(a).forEach((prefix) => {
-                AjaxService.buildParams(prefix, a[prefix], add);
+                CHIMAjax.buildParams(prefix, a[prefix], add);
             });
         }
 
@@ -97,7 +95,7 @@ const AjaxService = {
             }
             return '';
         }
-        const query = queryStr(AjaxService.params(data));
+        const query = queryStr(CHIMAjax.params(data));
 
         xhr.open('GET', url + query);
 
@@ -141,7 +139,7 @@ const AjaxService = {
         }
 
         if (typeof data === 'string') {
-            const query = queryStr(AjaxService.params(data));
+            const query = queryStr(CHIMAjax.params(data));
             xhr.open('POST', url + query);
 
             xhr.setRequestHeader('Content-Type', 'application/www-form-urlencoded');
@@ -205,4 +203,4 @@ const AjaxService = {
     }
 };
 
-module.exports = AjaxService;
+module.exports = CHIMAjax;

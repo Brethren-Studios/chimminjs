@@ -1,11 +1,13 @@
-const AjaxService = require('./chimmin/ajax');
-const bindToHTMLElementProto = require('./chimmin/dom');
+const CHIMAjax = require('./chimmin/ajax');
+const CHIMNode = require('./chimmin/dom');
 
 const init = function init() {
-    window.chimmin = function() {
-        bindToHTMLElementProto();
-        window.ajax = AjaxService;
+    window.chim = function(selector) {
+        return new CHIMNode(
+            selector
+        );
     };
+    window.ajax = CHIMAjax;
 };
 
 init();

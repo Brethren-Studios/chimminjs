@@ -3,15 +3,96 @@
 <head>
     <script src="../dist/chim.min.js"></script>
 </head>
-<body>
-	<title>ChimminJS</title>
-	<div id="square" style="width:10px;height:10px;"></div>
-	<script>
-        chimmin();
+<style>
+    .square {
+        height: 10px;
+        width: 10px;
+    }
 
-        document.getElementById('square').applyCss('background-color', 'blue');
-        ajax.get('https://api.github.com/repos/Brethren-Studios/chimsockets/releases', {}, (data) => {
-            console.log(data);
-        });
+    .border {
+        border: 1px solid black;
+    }
+
+    .blue {
+        background-color: blue;
+    }
+
+    .yellow {
+        background-color: yellow;
+    }
+</style>
+<body>
+	<title>chimminJS</title>
+	<div id="square1" class="square"></div>
+    <div id="square2" class="square"></div>
+    <div id="square3" class="square"></div>
+    <div id="square4" class="square"></div>
+    <button id="add-border">Add border</button>
+    <button id="add-blue">Add blue</button>
+    <button id="add-yellow">Add yellow</button>
+    <form>
+        <label>Change text:</label>
+        <input id="change-text" type="text">
+    </form>
+    <div id="text"></div>
+    <button id="refocus">Refocus on input</button>
+	<script>
+        // wait til dom is ready
+        chim(document).onReady(function() {
+            // save chimminJS nodes in variables
+            const squares = chim('.square');
+
+            // add a click event to any HTML element
+            chim('#add-border').onClick(function() {
+                // apply css to any HTML element
+                squares.applyCss('border', '1px solid black');
+            });
+
+            chim('#add-blue').onClick(function() {
+                // add a class to any HTMLElement
+                chim('#square1').addClass('blue');
+                chim('#square3').addClass('blue');
+
+                // change an elements inner HTML
+                chim('#add-blue').text('Blue added!');
+                /// ...or get it
+                alert(chim('#add-blue').text());
+            });
+
+            chim('#add-yellow').onClick(function() {
+                chim('#square2').addClass('yellow');
+                chim('#square4').addClass('yellow');
+
+                chim('#add-yellow').text('Yellow added!');
+            });
+
+            chim('form').onSubmit(function(e) {
+                // prevent form reload default
+                e.preventDefault();
+            });
+
+            chim('#change-text').onKeyup(function(e) {
+                e.preventDefault();
+                if (e.keyCode === 13) {
+                    // get input value
+                    const value = chim('#change-text').value();
+                    chim('#text').text(value);
+                }
+            });
+
+            chim('#change-text').prop('placeholder', 'Barbie');
+
+            chim('#refocus').onClick(function(e) {
+                // focus on an element
+                chim('#change-text').focus();
+            });
+
+            // send a get request
+            ajax.get('https://api.github.com/repos/Brethren-Studios/chimsockets/releases', {}, (data) => {
+                console.log(data);
+            });
+        })
 	</script>
+
 </body>
+</html>
