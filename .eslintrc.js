@@ -25,5 +25,8 @@ module.exports = {
             "always"
         ],
         "no-console": 0
+    },
+    "globals": {
+        "chim": true
     }
 };

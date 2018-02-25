@@ -48,7 +48,9 @@
                 squares.applyCss('border', '1px solid black');
             });
 
-            chim('#add-blue').onClick(function() {
+            const blue = chim('#add-blue');
+
+            blue.onClick(function() {
                 // add a class to any HTMLElement
                 chim('#square1').addClass('blue');
                 chim('#square3').addClass('blue');
@@ -59,12 +61,18 @@
                 alert(chim('#add-blue').text());
             });
 
-            chim('#add-yellow').onClick(function() {
-                chim('#square2').addClass('yellow');
-                chim('#square4').addClass('yellow');
+            // HTMLElement as selector
+            const yellow = document.getElementById('add-yellow');
+            if (!yellow.disabled) {
+                const chYellow = chim(yellow);
+                chYellow.onClick(function() {
+                    chim('#square2').addClass('yellow');
+                    chim('#square4').addClass('yellow');
 
-                chim('#add-yellow').text('Yellow added!');
-            });
+                    chim('#add-yellow').text('Yellow added!');
+                });
+            }
+
 
             chim('form').onSubmit(function(e) {
                 // prevent form reload default
@@ -88,10 +96,10 @@
             });
 
             // send a get request
-            ajax.get('https://api.github.com/repos/Brethren-Studios/chimsockets/releases', {}, (data) => {
+            chim.go.get('https://api.github.com/repos/Brethren-Studios/chimsockets/releases', {}, (data) => {
                 console.log(data);
             });
-        })
+        });
 	</script>
 
 </body>

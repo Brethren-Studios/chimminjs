@@ -1,33 +1,34 @@
 /**
  *
- * @param selector - represents HTML node(s)
+ * @param selector {string|Object} - represents HTML node(s)
  * @constructor
  */
 const CHIMNode = function(selector) {
-    if (typeof selector !== 'string' && selector.constructor.name !== 'HTMLDocument') {
+    if (typeof selector !== 'string' &&
+        selector.constructor.__proto__.name !== 'HTMLElement')
+    {
         throw Error('A CHIMNode needs a selector.');
     }
 
     // private methods
     this._init = function (selector) {
-        if (selector.constructor.name === 'HTMLDocument') {
-            this._isDocument = true;
-            return selector; // document
-        }
-        if (selector[0] === '#') {
-            return document.getElementById(selector.substring(1));
-        }
-        if (selector[0] === '.') {
-            this._isHTMLCollection = true;
-            return Array.from(document.getElementsByClassName(selector.substring(1)));
-        } else if (typeof selector === 'string') {
-            this._isHTMLCollection = true;
-            return Array.from(document.getElementsByTagName(selector));
+        if (typeof selector === 'string') {
+            if (selector[0] === '#') {
+                return document.getElementById(selector.substring(1));
+            }
+            if (selector[0] === '.') {
+                this._isHTMLCollection = true;
+                return Array.from(document.getElementsByClassName(selector.substring(1)));
+            } else {
+                this._isHTMLCollection = true;
+                return Array.from(document.getElementsByTagName(selector));
+            } 
+        } else {
+            return selector;
         }
     };
 
     // private variables
-    this._isDocument = false;
     this._isHTMLCollection = false;
 
     // init node
@@ -36,26 +37,35 @@ const CHIMNode = function(selector) {
 
 // public methods
 CHIMNode.prototype = {
-    // document only
-    onReady: function onReady(init) {
-        if (!this._isDocument) {
-            throw Error('Only HTMLDocument has an "onReady" event.');
+    appendTo: function appendTo(chim) {
+        if (typeof chim !== 'object') {
+            throw Error('You can only append to another CHIMNode');
         }
-        this._node.addEventListener('DOMContentLoaded', init);
+        if (this._isHTMLCollection || chim._isHTMLCollection) {
+            throw Error('You cannot append an HTMLCollection.');
+        }
+
+        chim._node.appendChild(this._node);
     },
 
+    remove: function remove() {
+        if (this._isHTMLCollection) {
+            this._node.forEach((el) => {
+                el.parentElement.removeChild(el);
+            });
+        } else {
+            this._node.parentElement.removeChild(this._node);
+        }
+    },
 
     addClass: function addClass(className) {
         if (!className) {
             throw Error('You must provide a class name.');
         }
-        if (this._isDocument) {
-            throw Error('You cannot add a class to the document object.');
-        }
 
         if (this._isHTMLCollection) {
             this._node.forEach((el) => {
-               el.classList.add(className);
+                el.classList.add(className);
             });
         } else {
             this._node.classList.add(className);
@@ -76,16 +86,13 @@ CHIMNode.prototype = {
         } else {
             args.forEach((className) => {
                 this._node.classList.add(className);
-            })
+            });
         }
     },
 
     removeClass: function removeClass(className) {
         if (!className) {
             throw Error('You must provide a class name.');
-        }
-        if (this._isDocument) {
-            throw Error('You cannot remove a class from the document object.');
         }
 
         if (this._isHTMLCollection) {
@@ -100,9 +107,6 @@ CHIMNode.prototype = {
     toggleClass: function toggleClass(className, bool) {
         if (bool === undefined) {
             throw Error('Bool argument required.');
-        }
-        if (this._isDocument) {
-            throw Error('You cannot add a class to the document object.');
         }
 
         if (this._isHTMLCollection) {
@@ -123,11 +127,8 @@ CHIMNode.prototype = {
     },
 
     prop: function prop(prop, value) {
-        if (!prop || !value) {
-            throw Error('propertyName and value arguments required.')
-        }
-        if (this._isDocument) {
-            throw Error('You cannot change properties on a document object.');
+        if (!prop || (!value && !(typeof value === 'boolean'))) {
+            throw Error('propertyName and value arguments required.');
         }
 
         if (this._isHTMLCollection) {
@@ -144,9 +145,6 @@ CHIMNode.prototype = {
         if (!prop || !value) {
             throw Error('You must provide a property and value.');
         }
-        if (this._isDocument) {
-            throw Error('You cannot apply CSS to the document object.');
-        }
 
         if (this._isHTMLCollection) {
             this._node.forEach((el) => {
@@ -158,11 +156,6 @@ CHIMNode.prototype = {
     },
 
     text: function text(input) {
-
-        if (this._isDocument) {
-            throw Error('You cannot change the text on the document object.')
-        }
-
         if (this._isHTMLCollection) {
             console.error('You are potentially iterating through a collection of HTMLElements to change their innerHTML. Are you sure you want to do this?');
             if (!input && typeof input !== 'string') {
@@ -186,10 +179,6 @@ CHIMNode.prototype = {
     },
 
     value: function value(input) {
-        if (this._isDocument) {
-            throw Error('You cannot change the text on the document object.')
-        }
-
         if (this._isHTMLCollection) {
             throw Error('You cannot  change the value of an HTMLCollection.');
         } else {
@@ -202,9 +191,6 @@ CHIMNode.prototype = {
     },
 
     focus: function focus() {
-        if (this._isDocument) {
-            throw Error('You cannot focus on the document object.');
-        }
         if (this._isHTMLCollection) {
             throw Error('You can only focus on a single HTMLElement.');
         }

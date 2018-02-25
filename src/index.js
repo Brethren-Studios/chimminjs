@@ -3,11 +3,26 @@ const CHIMNode = require('./chimmin/dom');
 
 const init = function init() {
     window.chim = function(selector) {
-        return new CHIMNode(
-            selector
-        );
+        if (selector.constructor.name === 'HTMLDocument') {
+            const CHIMDoc = function(doc) {
+                return {
+                    onReady: function onReady(init) {
+                        doc.addEventListener('DOMContentLoaded', init);
+                    }
+                };
+            };
+            return CHIMDoc(
+                selector
+                );
+        } else {
+            return new CHIMNode(
+                selector
+                );
+        }
+        
     };
-    window.ajax = CHIMAjax;
+
+    window.chim.go = CHIMAjax;
 };
 
 init();
