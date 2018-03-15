@@ -45,6 +45,11 @@ const CHIMAjax = {
      * @returns {string} - data in request params format
      */
     params(a) {
+        if (typeof a === 'string') {
+            // if string passed in, assume it's already a query string
+            return a;
+        }
+
         const s = [],
             isFunction = (functionToCheck) => {
                 return (functionToCheck &&
@@ -59,19 +64,17 @@ const CHIMAjax = {
                 s[s.length] = `${encodeURIComponent(key).trim()}=${encodeURIComponent(value == null ? '' : value)}`;
             };
 
-        // if an array was passed in, assume that it is an array of form elements
         if (Array.isArray(a)) {
-            // easy, serialize the form elements
+            // if an array was passed in, assume it is an array of form elements
             a.forEach((el) => {
                 add(el.name, el.value);
             });
         } else {
-            // encode params recursively
+            // else, encode params recursively
             Object.keys(a).forEach((prefix) => {
                 CHIMAjax.buildParams(prefix, a[prefix], add);
             });
         }
-
         // return the resulting serialization
         return s.join('&');
     },
@@ -138,7 +141,7 @@ const CHIMAjax = {
             return '';
         }
 
-        if (typeof data === 'string') {
+        if (Array.isArray(data) || typeof data === 'string') {
             const query = queryStr(CHIMAjax.params(data));
             xhr.open('POST', url + query);
 
