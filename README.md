@@ -35,8 +35,7 @@ ChimminJS is perfect for simple pages with a single main element--like a form, s
 ```
 
 ```javascript
-chimmin(); // initialize chimminJS
-const input = document.getElementsByTagName('input'); // get regular HTMLElement
+const input = chim('input'); // init chim element with selector
 
 input.applyCss('opacity', '1'); // apply CSS to element
 
@@ -47,18 +46,18 @@ input.onKeyup((el) => { // handle events
 
 ### AJAX Requests ###
 ```javascript
-const getBtn = document.getElementsById('find-song');
-const postBtn = document.getElementsById('cool-song');
+const getBtn = chim('#find-song');
+const postBtn = chim('#cool-song');
 
 getBtn.onClick((e) => {
   // add request params as an object or querystring
-  ajax.get('/that-one-song', { song: 'Africa by Toto' }, (response) => {
+  chim.go.get('/that-one-song', { song: 'Africa by Toto' }, (response) => {
     // do whatever you want
   });
 });
 
 postBtn.onClick((e) => {
- ajax.post('/check-it-out', { song: 'Replay by Iyaz' }, (response) => {
+ chim.go.post('/check-it-out', { song: 'Replay by Iyaz' }, (response) => {
   // do whatever you want
  });
 });

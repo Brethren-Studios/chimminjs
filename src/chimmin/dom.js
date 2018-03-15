@@ -157,7 +157,6 @@ CHIMNode.prototype = {
 
     text: function text(input) {
         if (this._isHTMLCollection) {
-            console.error('You are potentially iterating through a collection of HTMLElements to change their innerHTML. Are you sure you want to do this?');
             if (!input && typeof input !== 'string') {
                 const res = [];
                 this._node.forEach((el) => {

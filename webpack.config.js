@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
-    entry: './src/index.js',
+    entry: ['babel-polyfill', './src/index.js'],
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'chim.min.js'
@@ -29,9 +29,12 @@ module.exports = {
         }),
         new UglifyJsPlugin({
             uglifyOptions: {
-                ecma: 6,
+                ecma: 5,
                 warnings: false,
                 mangle: false,
+                compress: {
+                    drop_console: true
+                },
                 output: {
                     comments: false,
                     beautify: false
