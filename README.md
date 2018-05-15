@@ -10,12 +10,12 @@ A simple library for DOM manipulation and HTTP requests, chimminJS is very light
 ## Getting It ##
 
 Use a content delivery network (CDN) URL to embed chimminJS directly on your HTML page:
-// production-ready, minified version
 ```
+/* production-ready, minified version */
 <script src="https://d27ilbh7v6ssec.cloudfront.net/0.0.3/chim.min.js"></script>
 ```
-// developer-friendly, debug version
 ```
+/* developer-friendly, debug version */
 <script src="https://d27ilbh7v6ssec.cloudfront.net/0.0.3/chimmin.js"></script>
 ```
 
@@ -31,7 +31,7 @@ ChimminJS is perfect for simple pages with a single main element--like a form, s
 ```
 <body>
   <div>
-    <input styles="opacity:0"/>
+    <input style="opacity:0">
     <button id="find-song" />
     <button id="cool-song" />
   </div>
@@ -54,18 +54,26 @@ const getBtn = chim('#find-song');
 const postBtn = chim('#cool-song');
 
 getBtn.onClick((e) => {
-  // add request params as an object or querystring
-  chim.go.get('/that-one-song', { song: 'Africa by Toto' }, (response) => {
-    // do whatever you want
+  chim.go.get('/that-one-song', (response) => {
+    console.log(response); // { title: 'Africa', artist: 'Toto' }
   });
 });
 
 postBtn.onClick((e) => {
- chim.go.post('/check-it-out', { song: 'Replay by Iyaz' }, (response) => {
-  // do whatever you want
- });
+  // add data to request as object, array, or query string
+  chim.go.post('/add-to-playlist', { song: 'Replay by Iyaz' }, (response) => {
+    console.log(response); // 'Song added to playlist!'
+  });
 });
 ```
+
+## Compatiliblity ##
+
+The source is compiled into ES5 with [Babel](https://babeljs.io/), making it (mostly) compatible with all major browsers. Browser compatibility is an ongoing battle, so please report any issues you experience!
+
+## Issues ##
+
+If there are any issues with this library, please open a ticket. If there are any changes you'd like to contribute to this library, open a pull request. We here at Brethren Studios pride ourselves on responding to the needs of the open source community.
 
 ## License ##
 This content is released under the (http://opensource.org/licenses/MIT) MIT License.

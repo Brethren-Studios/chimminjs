@@ -11,8 +11,8 @@ function isFunction(functionToCheck) {
 /**
  *
  * @param {string} prefix - prefixes form entries if defined
- * @param obj - data called on recursively to traverse all params
- * @param add - serializes and adds to result
+ * @param {*} obj - data called on recursively to traverse all params
+ * @param {addToParams} add - serializes and adds to result
  */
 function buildParams(prefix, obj, add) {
     if (Array.isArray(obj)) {
@@ -56,6 +56,14 @@ function serialize(a) {
     }
 
     const s = ['?'],
+        /**
+         * Takes key/value combination and adds
+         * to pre-serialized list of params.
+         *
+         * @callback addToParams
+         * @param {string} key - key of data value to serialize
+         * @param {*} valueOrFunction - data value or function returning data value
+         */
         add = (key, valueOrFunction) => {
             // if value is a function, invoke it and use its return value
             const value = isFunction(valueOrFunction) ?
@@ -88,7 +96,7 @@ function serialize(a) {
  */
 
 /**
- * Required and optional arguments for ChimAJAX
+ * Required and optional arguments for CHIMAjax
  * request validated and mapped to object.
  *
  * @typedef {Object} RequestArgs
@@ -103,7 +111,7 @@ function serialize(a) {
  * @param {Object[]} args - URL, and optional data and/or callback
  * @returns {RequestArgs} - arguments object
  */
-const handleArguments = function(args) {
+function handleArguments(args) {
     const result = {};
     if (!args.length || typeof args[0] !== 'string') {
         throw new Error('URL string argument must be provided.');
@@ -121,7 +129,10 @@ const handleArguments = function(args) {
         result.data = args[1];
     }
     return result;
-};
+}
+
+const DONE = 4; // readyState 4 means request is done
+const OK = 200; // status 200 is a successful return
 
 const CHIMAjax = {
     /**
@@ -134,7 +145,6 @@ const CHIMAjax = {
     get(...args) {
         const { url, data, callback } = handleArguments(args);
 
-
         console.log('Sending GET to', url, '...');
         const xhr = new XMLHttpRequest();
 
@@ -146,8 +156,6 @@ const CHIMAjax = {
         xhr.send();
 
         xhr.onreadystatechange = () => {
-            const DONE = 4; // readyState 4 means request is done
-            const OK = 200; // status 200 is a successful return
             if (xhr.readyState === DONE) {
                 if (xhr.status === OK) {
                     const parsed = JSON.parse(xhr.responseText);
@@ -188,8 +196,6 @@ const CHIMAjax = {
 
 
         xhr.onreadystatechange = () => {
-            const DONE = 4; // readyState 4 means request is done
-            const OK = 200; // status 200 is a successful return
             if (xhr.readyState === DONE) {
                 if (xhr.status === OK) {
                     const parsed = JSON.parse(xhr.responseText);
@@ -225,8 +231,6 @@ const CHIMAjax = {
 
 
         xhr.onreadystatechange = () => {
-            const DONE = 4; // readyState 4 means request is done
-            const OK = 200; // status 200 is a successful return
             if (xhr.readyState === DONE) {
                 if (xhr.status === OK) {
                     const parsed = JSON.parse(xhr.responseText);
