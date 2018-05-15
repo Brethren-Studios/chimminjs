@@ -5,31 +5,28 @@
  */
 const CHIMNode = function(selector) {
     if (typeof selector !== 'string' &&
-        selector.constructor.__proto__.name !== 'HTMLElement')
+        !(selector instanceof HTMLElement))
     {
-        throw Error('A CHIMNode needs a selector.');
+        throw new Error('A CHIMNode needs a selector.');
     }
 
     // private methods
     this._init = function (selector) {
         if (typeof selector === 'string') {
-            if (selector[0] === '#') {
-                return document.getElementById(selector.substring(1));
-            }
-            if (selector[0] === '.') {
-                this._isHTMLCollection = true;
-                return Array.from(document.getElementsByClassName(selector.substring(1)));
+            const nodeList = document.querySelectorAll(selector);
+            if (nodeList.length > 1) {
+                this._isNodeList = true;
+                return Array.from(nodeList);
             } else {
-                this._isHTMLCollection = true;
-                return Array.from(document.getElementsByTagName(selector));
-            } 
+                return nodeList[0];
+            }
         } else {
             return selector;
         }
     };
 
     // private variables
-    this._isHTMLCollection = false;
+    this._isNodeList = false;
 
     // init node
     this._node = this._init(selector);
@@ -39,17 +36,17 @@ const CHIMNode = function(selector) {
 CHIMNode.prototype = {
     appendTo: function appendTo(chim) {
         if (typeof chim !== 'object') {
-            throw Error('You can only append to another CHIMNode');
+            throw new Error('You can only append to another CHIMNode');
         }
-        if (this._isHTMLCollection || chim._isHTMLCollection) {
-            throw Error('You cannot append an HTMLCollection.');
+        if (this._isNodeList || chim._isNodeList) {
+            throw new Error('You cannot append a NodeList.');
         }
 
         chim._node.appendChild(this._node);
     },
 
     remove: function remove() {
-        if (this._isHTMLCollection) {
+        if (this._isNodeList) {
             this._node.forEach((el) => {
                 el.parentElement.removeChild(el);
             });
@@ -60,10 +57,10 @@ CHIMNode.prototype = {
 
     addClass: function addClass(className) {
         if (!className) {
-            throw Error('You must provide a class name.');
+            throw new Error('You must provide a class name.');
         }
 
-        if (this._isHTMLCollection) {
+        if (this._isNodeList) {
             this._node.forEach((el) => {
                 el.classList.add(className);
             });
@@ -74,10 +71,10 @@ CHIMNode.prototype = {
 
     addClasses: function addClasses(...args) {
         if (!args) {
-            throw Error('You must provide at least one class name.');
+            throw new Error('You must provide at least one class name.');
         }
 
-        if (this._isHTMLCollection) {
+        if (this._isNodeList) {
             this._node.forEach((el) => {
                 args.forEach((className) => {
                     el.classList.add(className);
@@ -92,10 +89,10 @@ CHIMNode.prototype = {
 
     removeClass: function removeClass(className) {
         if (!className) {
-            throw Error('You must provide a class name.');
+            throw new Error('You must provide a class name.');
         }
 
-        if (this._isHTMLCollection) {
+        if (this._isNodeList) {
             this._node.forEach((el) => {
                 el.classList.remove(className);
             });
@@ -106,10 +103,10 @@ CHIMNode.prototype = {
 
     toggleClass: function toggleClass(className, bool) {
         if (bool === undefined) {
-            throw Error('Bool argument required.');
+            throw new Error('Bool argument required.');
         }
 
-        if (this._isHTMLCollection) {
+        if (this._isNodeList) {
             this._node.forEach((el) => {
                 if (bool) {
                     el.classList.add(className);
@@ -128,10 +125,10 @@ CHIMNode.prototype = {
 
     prop: function prop(prop, value) {
         if (!prop || (!value && !(typeof value === 'boolean'))) {
-            throw Error('propertyName and value arguments required.');
+            throw new Error('propertyName and value arguments required.');
         }
 
-        if (this._isHTMLCollection) {
+        if (this._isNodeList) {
             this._node.forEach((el) => {
                 el[prop] = value;
             });
@@ -143,10 +140,10 @@ CHIMNode.prototype = {
 
     applyCss: function applyCss(prop, value) {
         if (!prop || !value) {
-            throw Error('You must provide a property and value.');
+            throw new Error('You must provide a property and value.');
         }
 
-        if (this._isHTMLCollection) {
+        if (this._isNodeList) {
             this._node.forEach((el) => {
                 el.style[prop] = value;
             });
@@ -156,7 +153,7 @@ CHIMNode.prototype = {
     },
 
     text: function text(input) {
-        if (this._isHTMLCollection) {
+        if (this._isNodeList) {
             if (!input && typeof input !== 'string') {
                 const res = [];
                 this._node.forEach((el) => {
@@ -178,8 +175,8 @@ CHIMNode.prototype = {
     },
 
     value: function value(input) {
-        if (this._isHTMLCollection) {
-            throw Error('You cannot  change the value of an HTMLCollection.');
+        if (this._isNodeList) {
+            throw new Error('You cannot change the value of a NodeList.');
         } else {
             if (!input && typeof input !== 'string') {
                 return this._node.value;
@@ -190,15 +187,15 @@ CHIMNode.prototype = {
     },
 
     focus: function focus() {
-        if (this._isHTMLCollection) {
-            throw Error('You can only focus on a single HTMLElement.');
+        if (this._isNodeList) {
+            throw new Error('You can only focus on a single HTMLElement.');
         }
 
         this._node.focus();
     },
 
     onClick: function onClick(handler, options) {
-        if (this._isHTMLCollection) {
+        if (this._isNodeList) {
             this._node.forEach((el) => {
                 el.addEventListener('click', handler, options || false);
             });
@@ -208,7 +205,7 @@ CHIMNode.prototype = {
     },
 
     onKeyup: function onKeyup(handler, options) {
-        if (this._isHTMLCollection) {
+        if (this._isNodeList) {
             this._node.forEach((el) => {
                 el.addEventListener('keyup', handler, options || false);
             });
@@ -218,7 +215,7 @@ CHIMNode.prototype = {
     },
 
     onKeydown: function onKeydown(handler, options) {
-        if (this._isHTMLCollection) {
+        if (this._isNodeList) {
             this._node.forEach((el) => {
                 el.addEventListener('keydown', handler, options || false);
             });
@@ -228,7 +225,7 @@ CHIMNode.prototype = {
     },
 
     onKeypress: function onKeypress(handler, options) {
-        if (this._isHTMLCollection) {
+        if (this._isNodeList) {
             this._node.forEach((el) => {
                 el.addEventListener('keypress', handler, options || false);
             });
@@ -238,7 +235,7 @@ CHIMNode.prototype = {
     },
 
     onSubmit: function onSubmit(handler, options) {
-        if (this._isHTMLCollection) {
+        if (this._isNodeList) {
             this._node.forEach((el) => {
                 el.addEventListener('submit', handler, options || false);
             });

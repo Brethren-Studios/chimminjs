@@ -2,7 +2,8 @@ const path = require('path');
 const webpack = require('webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
-module.exports = {
+const minConfig = {
+    name: 'minified',
     entry: ['babel-polyfill', './src/index.js'],
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -49,3 +50,37 @@ module.exports = {
         })
     ]
 };
+
+const debugConfig  = {
+    name: 'debug',
+    entry: ['babel-polyfill', './src/index.js'],
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'chimmin.js'
+    },
+    module: {
+        loaders: [
+            {
+                test: /\.js$/,
+                loader: 'babel-loader',
+                query: {
+                    presets: ['es2015']
+                }
+            }
+        ]
+    },
+    stats: {
+        colors: true
+    },
+    devtool: 'source-map',
+    plugins: [
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify('development')
+        })
+    ]
+};
+
+module.exports = [
+    minConfig,
+    debugConfig
+];
