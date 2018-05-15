@@ -10,9 +10,13 @@ A simple library for DOM manipulation and HTTP requests, chimminJS is very light
 ## Getting It ##
 
 Use a content delivery network (CDN) URL to embed chimminJS directly on your HTML page:
-
+// production-ready, minified version
 ```
-<script src="https://d27ilbh7v6ssec.cloudfront.net/chim.min.js"></script>
+<script src="https://d27ilbh7v6ssec.cloudfront.net/0.0.3/chim.min.js"></script>
+```
+// developer-friendly, debug version
+```
+<script src="https://d27ilbh7v6ssec.cloudfront.net/0.0.3/chimmin.js"></script>
 ```
 
 Download the source:
