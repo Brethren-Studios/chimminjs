@@ -33,7 +33,8 @@ const minConfig = {
                 warnings: false,
                 mangle: false,
                 compress: {
-                    drop_console: true
+                    // hides log but not warning or error
+                    pure_funcs: ['console.log']
                 },
                 output: {
                     comments: false,

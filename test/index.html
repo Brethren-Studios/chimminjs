@@ -12,7 +12,7 @@
         .container {
             position: absolute;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             width: 100%;
             height: 100%;
         }
@@ -53,13 +53,26 @@
             background-color: #0041B2;
             color: white;
         }
+
+        .tb {
+            border-top: 2px solid black;
+        }
+        .rb {
+            border-right: 2px solid black;
+        }
+        .bb {
+            border-bottom: 2px solid black;
+        }
+        .lb {
+            border-left: 2px solid black;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div id="mocha"></div>
-        <div id="test-status"></div>
         <div id="dom-test">
+            <div id="test-status"></div>
             <div id="test-id-1" class="test-class"></div>
             <div id="test-id-2" class="test-class"></div>
             <button id="test-btn"></button>

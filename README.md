@@ -67,7 +67,7 @@ postBtn.onClick((e) => {
 });
 ```
 
-## Compatiliblity ##
+## Compatibility ##
 
 The source is compiled into ES5 with [Babel](https://babeljs.io/), making it (mostly) compatible with all major browsers. Browser compatibility is an ongoing battle, so please report any issues you experience!
 

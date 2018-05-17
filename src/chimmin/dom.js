@@ -1,13 +1,24 @@
+const {
+    isObject,
+    isString
+} = require('../util');
+
 /**
- * Constructs a CHIMNode, which is just a lightweight
- * wrapper around an HTMLElement or NodeList that provides
- * an interface for commonly used DOM manipulation methods.
+ * A lightweight wrapper around an HTMLElement or NodeList that
+ * provides an interface for commonly used DOM manipulation methods.
+ *
+ * @typedef {Object} CHIMNode
+ * @property {HTMLElement|Array<HTMLElement>} _node
+ * @property {boolean} _isNodeList
+ */
+
+/**
  *
  * @param selector {string|Object} - represents HTML node(s)
  * @constructor
  */
 const CHIMNode = function(selector) {
-    if (typeof selector !== 'string' &&
+    if (!isString(selector) &&
         !(selector instanceof HTMLElement) &&
         !(selector instanceof NodeList) &&
         !(selector instanceof HTMLCollection))
@@ -18,7 +29,7 @@ const CHIMNode = function(selector) {
     // init CHIMNode
     this._init = function (selector) {
         // if CSS selector (ID, class name, tag name)
-        if (typeof selector === 'string') {
+        if (isString(selector)) {
             const nodeList = document.querySelectorAll(selector);
             if (nodeList.length > 1) {
                 this._isNodeList = true;
@@ -60,7 +71,7 @@ CHIMNode.prototype = {
      * @param {Object} chimNode - parent element to which this node is appended
      */
     appendTo: function appendTo(chimNode) {
-        if (typeof chimNode !== 'object') {
+        if (!(chimNode instanceof CHIMNode)) {
             throw new Error('You can only append to another CHIMNode.');
         }
         if (this._isNodeList || chimNode._isNodeList) {
@@ -87,8 +98,8 @@ CHIMNode.prototype = {
      * @param {string} className
      */
     addClass: function addClass(className) {
-        if (!className) {
-            throw new Error('You must provide a class name.');
+        if (!className || !isString(className)) {
+            throw new Error('You must provide a string class name argument.');
         }
 
         if (this._isNodeList) {
@@ -112,6 +123,9 @@ CHIMNode.prototype = {
         if (this._isNodeList) {
             this._node.forEach((el) => {
                 args.forEach((className) => {
+                    if (!isString(className)) {
+                        throw new Error('Class names must be strings.');
+                    }
                     el.classList.add(className);
                 });
             });
@@ -127,8 +141,8 @@ CHIMNode.prototype = {
      * @param {string} className
      */
     removeClass: function removeClass(className) {
-        if (!className) {
-            throw new Error('You must provide a class name.');
+        if (!className || !isString(className)) {
+            throw new Error('You must provide a string class name argument.');
         }
 
         if (this._isNodeList) {
@@ -147,6 +161,10 @@ CHIMNode.prototype = {
      * @param {boolean} bool
      */
     toggleClass: function toggleClass(className, bool) {
+        if (!className || !isString(className)) {
+            throw new Error('You must provide a string class name argument.');
+        }
+
         if (bool === undefined) {
             throw new Error('Bool argument required.');
         }
@@ -172,20 +190,35 @@ CHIMNode.prototype = {
      * Only supports scalar properties (e.g. value, disabled, etc.).
      *
      * @param {string} prop
-     * @param {*} value
+     * @param {string|boolean|Number} value
      */
-    // TODO: should this also return the prop if no value is supplied?
     prop: function prop(prop, value) {
-        if (!prop || (!value && !(typeof value === 'boolean'))) {
-            throw new Error('propertyName and value arguments required.');
+        if (!prop || !isString(prop)) {
+            throw new Error('You must provide a valid property name.');
+        }
+
+        if (isObject(value)) {
+            throw new Error('CHIMNode.prop(...) does not support properties with non-scalar values.');
         }
 
         if (this._isNodeList) {
-            this._node.forEach((el) => {
-                el[prop] = value;
-            });
+            if (!value) {
+                const res = [];
+                this._node.forEach((el) => {
+                    res[prop] = el[prop];
+                });
+                return res;
+            } else {
+                this._node.forEach((el) => {
+                    el[prop] = value;
+                });
+            }
         } else {
-            this._node[prop] = value;
+            if (!value) {
+                return this._node[prop];
+            } else {
+                this._node[prop] = value;
+            }
         }
 
     },
@@ -196,8 +229,8 @@ CHIMNode.prototype = {
      * @param {string} value
      */
     applyCss: function applyCss(prop, value) {
-        if (!prop || !value) {
-            throw new Error('You must provide a property and value.');
+        if ((!prop || !isString(prop))|| !value) {
+            throw new Error('You must provide a valid property and value.');
         }
 
         if (this._isNodeList) {
@@ -210,29 +243,33 @@ CHIMNode.prototype = {
     },
     /**
      * Modifies the innerHTML of the node / list of nodes.
-     * If no argument is supplied, returns the innerHTML.
+     * If no argument is supplied, returns innerHTML.
      *
-     * @param {string} [input]
-     * @returns {string|Object[]}
+     * @param {string} [txt]
+     * @returns {string|Array|undefined}
      */
-    text: function text(input) {
+    text: function text(txt) {
+        if (isObject(txt)) {
+            throw new Error('CHIMNode.text(...) does not support non-scalar values.');
+        }
+
         if (this._isNodeList) {
-            if (!input && typeof input !== 'string') {
+            if (!txt) {
                 const res = [];
                 this._node.forEach((el) => {
                     res.push(el.innerHTML);
                 });
                 return res;
             } else {
-                this._node.forEach((el) => {
-                    el.innerHTML = input;
+                this._node.forEach((el, i) => {
+                    this._node[i].innerHTML = txt;
                 });
             }
         } else {
-            if (!input && typeof input !== 'string') {
+            if (!txt) {
                 return this._node.innerHTML;
             } else {
-                this._node.innerHTML = input;
+                this._node.innerHTML = txt;
             }
         }
     },
@@ -241,17 +278,21 @@ CHIMNode.prototype = {
      * argument is supplied, returns the value. Does
      * not support NodeList.
      *
-     * @param {string} [input]
+     * @param {string} [text]
      * @returns {*}
      */
-    value: function value(input) {
+    value: function value(text) {
+        if (isObject(text)) {
+            throw new Error('CHIMNode.value(...) does not support non-scalar values.');
+        }
+
         if (this._isNodeList) {
             throw new Error('You cannot change the value of a NodeList.');
         } else {
-            if (!input && typeof input !== 'string') {
+            if (!text) {
                 return this._node.value;
             } else {
-                this._node.value = input;
+                this._node.value = text;
             }
         }
     },
@@ -277,7 +318,7 @@ CHIMNode.prototype = {
      * Adds a click listener to a node / list of nodes.
      *
      * @param {eventHandler} handler
-     * @param {Object} options
+     * @param {Object} [options]
      */
     onClick: function onClick(handler, options) {
         if (this._isNodeList) {
@@ -292,7 +333,7 @@ CHIMNode.prototype = {
      * Adds a keyup listener to a node / list of nodes.
      *
      * @param {eventHandler} handler
-     * @param {Object} options
+     * @param {Object} [options]
      */
     onKeyup: function onKeyup(handler, options) {
         if (this._isNodeList) {
@@ -307,7 +348,7 @@ CHIMNode.prototype = {
      * Adds a keydown listener to a node / list of nodes.
      *
      * @param {eventHandler} handler
-     * @param {Object} options
+     * @param {Object} [options]
      */
     onKeydown: function onKeydown(handler, options) {
         if (this._isNodeList) {
@@ -322,7 +363,7 @@ CHIMNode.prototype = {
      * Adds a keypress listener to a node / list of nodes.
      *
      * @param {eventHandler} handler
-     * @param {Object} options
+     * @param {Object} [options]
      */
     onKeypress: function onKeypress(handler, options) {
         if (this._isNodeList) {
@@ -338,7 +379,7 @@ CHIMNode.prototype = {
      * Used for form submission.
      *
      * @param {eventHandler} handler
-     * @param {Object} options
+     * @param {Object} [options]
      */
     onSubmit: function onSubmit(handler, options) {
         if (this._isNodeList) {
