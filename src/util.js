@@ -24,5 +24,21 @@ module.exports = {
      */
     isObject: function isObject(objectToCheck) {
         return (typeof objectToCheck === 'object');
+    },
+    /**
+     *
+     * @param boolToCheck
+     * @returns {boolean}
+     */
+    isBoolean: function isBoolean(boolToCheck) {
+        return (typeof boolToCheck === 'boolean');
+    },
+    /**
+     *
+     * @param varToCheck
+     * @returns {boolean}
+     */
+    isDefined: function isDefined(varToCheck) {
+        return varToCheck !== undefined && varToCheck !== null;
     }
 };

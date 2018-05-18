@@ -134,6 +134,7 @@ describe('CHIMNode', () => {
 
         const newSubtitle = 'Heroes Only!';
         subtitleInput.prop('value', newSubtitle);
+        subtitleInput.prop('disabled', false);
         assert.equal(newSubtitle, subtitleInput.value());
         done();
     });

@@ -1,6 +1,7 @@
 const {
     isObject,
-    isString
+    isString,
+    isDefined
 } = require('../util');
 
 /**
@@ -72,13 +73,16 @@ CHIMNode.prototype = {
      */
     appendTo: function appendTo(chimNode) {
         if (!(chimNode instanceof CHIMNode)) {
-            throw new Error('You can only append to another CHIMNode.');
+            if (chimNode instanceof HTMLElement) {
+                chimNode.appendChild(this._node);
+            }
+            throw new Error('You cannot append to an HTMLCollection or NodeList.');
+        } else {
+            if (this._isNodeList || chimNode._isNodeList) {
+                throw new Error('You cannot append to/with a NodeList.');
+            }
+            chimNode._node.appendChild(this._node);
         }
-        if (this._isNodeList || chimNode._isNodeList) {
-            throw new Error('You cannot append a NodeList.');
-        }
-
-        chimNode._node.appendChild(this._node);
     },
     /**
      * Removes this node / list of nodes from the DOM.
@@ -202,7 +206,7 @@ CHIMNode.prototype = {
         }
 
         if (this._isNodeList) {
-            if (!value) {
+            if (!isDefined(value)) {
                 const res = [];
                 this._node.forEach((el) => {
                     res[prop] = el[prop];
@@ -214,7 +218,7 @@ CHIMNode.prototype = {
                 });
             }
         } else {
-            if (!value) {
+            if (!isDefined(value)) {
                 return this._node[prop];
             } else {
                 this._node[prop] = value;
@@ -229,7 +233,7 @@ CHIMNode.prototype = {
      * @param {string} value
      */
     applyCss: function applyCss(prop, value) {
-        if ((!prop || !isString(prop))|| !value) {
+        if ((!prop || !isString(prop))|| (!value)) {
             throw new Error('You must provide a valid property and value.');
         }
 
@@ -254,7 +258,7 @@ CHIMNode.prototype = {
         }
 
         if (this._isNodeList) {
-            if (!txt) {
+            if (!isDefined(txt)) {
                 const res = [];
                 this._node.forEach((el) => {
                     res.push(el.innerHTML);
@@ -266,7 +270,7 @@ CHIMNode.prototype = {
                 });
             }
         } else {
-            if (!txt) {
+            if (!isDefined(txt)) {
                 return this._node.innerHTML;
             } else {
                 this._node.innerHTML = txt;
@@ -289,7 +293,7 @@ CHIMNode.prototype = {
         if (this._isNodeList) {
             throw new Error('You cannot change the value of a NodeList.');
         } else {
-            if (!text) {
+            if (!isDefined(text)) {
                 return this._node.value;
             } else {
                 this._node.value = text;
