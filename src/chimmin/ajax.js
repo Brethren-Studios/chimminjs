@@ -396,7 +396,7 @@ const CHIMAjax = {
      * along with the request.
      *
      * @function httpGet
-     * @param {...*} args - URL, and optional data, callback, dataType
+     * @param {...*} args - URL, [data, [callback, [dataType]]]
      * @returns {void}
      */
     get(...args) {
@@ -420,7 +420,7 @@ const CHIMAjax = {
      * along with the request in query parameter or JSON format.
      *
      * @function httpPost
-     * @param {...*} args - URL, and optional data and/or callback
+     * @param {...*} args - URL, [data, [callback, [dataType]]]
      * @returns {void}
      */
     post(...args) {
@@ -448,7 +448,7 @@ const CHIMAjax = {
      * and sent along with the request in JSON format.
      *
      * @function httpPut
-     * @param {...*} args - URL, data, and optional callback
+     * @param {...*} args - URL, data, [callback, [dataType]]
      * @returns {void}
      */
     put(...args) {

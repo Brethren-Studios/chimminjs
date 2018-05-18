@@ -72,11 +72,16 @@ CHIMNode.prototype = {
      * @param {Object} chimNode - parent element to which this node is appended
      */
     appendTo: function appendTo(chimNode) {
+        if (!isObject(chimNode)) {
+            throw new Error('You must provide a valid node.');
+        }
+
         if (!(chimNode instanceof CHIMNode)) {
             if (chimNode instanceof HTMLElement) {
                 chimNode.appendChild(this._node);
+            } else {
+                throw new Error('You cannot append to an HTMLCollection or NodeList.');
             }
-            throw new Error('You cannot append to an HTMLCollection or NodeList.');
         } else {
             if (this._isNodeList || chimNode._isNodeList) {
                 throw new Error('You cannot append to/with a NodeList.');
