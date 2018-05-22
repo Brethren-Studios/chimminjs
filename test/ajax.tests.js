@@ -1,6 +1,6 @@
 const assert = chai.assert;
 
-describe('CHIMAjax Service', () => {
+describe('CHIM AJAX Service', () => {
     let field1 = 'field1',
         field2 = 'field2',
         value1 = 'value1',
@@ -94,5 +94,26 @@ describe('CHIMAjax Service', () => {
            assert.hasAllKeys(JSON.parse(putRequest.data), [field1, field2]);
            done();
        });
+    });
+
+    it('fails when server returns 3xx error code', (done) => {
+        chim.go.get('http://httpbin.org/status/304', (response) => {
+            assert.isUndefined(response);
+            done();
+        });
+    });
+
+    it('fails when server returns 4xx error code', (done) => {
+        chim.go.get('http://httpbin.org/status/404', (response) => {
+            assert.isUndefined(response);
+            done();
+        });
+    });
+
+    it('fails when server returns 5xx error code', (done) => {
+        chim.go.get('http://httpbin.org/status/504', (response) => {
+            assert.isUndefined(response);
+            done();
+        });
     });
 });

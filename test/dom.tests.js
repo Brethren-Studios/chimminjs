@@ -13,7 +13,7 @@ function eventFire(el, eventType) {
     }
 }
 
-describe('CHIMNode', () => {
+describe('CHIMDoc, CHIMNode, & CHIMList', () => {
     after(() => {
         testStatus.text('Complete!');
     });
@@ -33,29 +33,26 @@ describe('CHIMNode', () => {
         const chimNode = chim('#test-id-1');
         assert.isDefined(chimNode._node);
         assert.isTrue(chimNode._node instanceof HTMLElement);
-        assert.isFalse(chimNode._isNodeList);
         done();
     });
 
     it('creates a CHIMNode given a class name', (done) => {
         testStatus.text('Creating CHIMNode with class name...');
         const chimNode = chim('.test-class');
-        assert.isDefined(chimNode._node);
-        assert.isTrue(chimNode._node[0] instanceof HTMLElement);
-        assert.isTrue(chimNode._isNodeList);
+        assert.isDefined(chimNode._list);
+        assert.isTrue(chimNode._list[0] instanceof HTMLElement);
         done();
     });
 
     it('creates a CHIMNode given a tag name', (done) => {
         testStatus.text('Creating CHIMNode with tag name...');
         const chimNode = chim('div');
-        assert.isDefined(chimNode._node);
-        assert.isTrue(chimNode._node[0] instanceof HTMLElement);
-        assert.isTrue(chimNode._isNodeList);
+        assert.isDefined(chimNode._list);
+        assert.isTrue(chimNode._list[0] instanceof HTMLElement);
         done()
     });
 
-    it('modifies a CHIMNode list', (done) => {
+    it('modifies a CHIMList', (done) => {
         const testClass = chim('.test-class');
         const txt = 'Initializing chimification';
 
@@ -127,7 +124,7 @@ describe('CHIMNode', () => {
         done();
     });
 
-    it('modifies the attributes of a CHIMNode', (done) => {
+    it('focuses on a CHIMNode', (done) => {
         testStatus.text('Adding text to input...');
         const subtitleInput = chim('#change-input');
         subtitleInput.focus();
