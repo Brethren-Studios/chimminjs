@@ -23,7 +23,6 @@ describe('CHIM AJAX Service', () => {
         chim.go.get('http://httpbin.org/get', (response) => {
             const getRequest = response;
             assert.isDefined(getRequest);
-            assert.isDefined(getRequest);
             assert.isEmpty(getRequest.args);
             done();
         });

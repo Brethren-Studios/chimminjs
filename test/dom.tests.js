@@ -157,16 +157,13 @@ describe('CHIMDoc, CHIMNode, & CHIMList', () => {
             subtitle.appendTo(chim('#dom-test'));
         });
 
+        // assert other listeners are defined
+        assert.isDefined(subtitleInput.onKeydown);
+        assert.isDefined(subtitleInput.onKeypress);
+        assert.isDefined(subtitleInput.onSubmit);
+
         testStatus.text('Testing click event...');
         eventFire(btn._node, 'click');
-        done();
-    });
-
-    it('contains untested methods', (done) => {
-        const title = chim('#test-id-1');
-        assert.isDefined(title.onKeydown);
-        assert.isDefined(title.onKeypress);
-        assert.isDefined(title.onSubmit);
         done();
     });
 });
