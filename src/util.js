@@ -35,10 +35,10 @@ module.exports = {
     },
     /**
      *
-     * @param varToCheck
+     * @param valueToCheck
      * @returns {boolean}
      */
-    isDefined: function isDefined(varToCheck) {
-        return varToCheck !== undefined && varToCheck !== null;
+    isDefined: function isDefined(valueToCheck) {
+        return valueToCheck !== undefined && valueToCheck !== null;
     }
 };

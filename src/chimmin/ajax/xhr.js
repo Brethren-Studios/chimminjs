@@ -1,5 +1,6 @@
 const {
-    isString
+    isString,
+    isDefined
 } = require('../../util');
 
 const serialize = require('./serialize');
@@ -33,7 +34,7 @@ const _APP = 'application',
  */
 function findResponseType(contentType) {
     if (contentType.includes(_TEXT)) {
-        return 'text';
+        return _TEXT;
     }
     if (contentType.includes(_APP)) {
         // json object
@@ -123,7 +124,7 @@ const chimXHR = function chimXHR(url, dataType) {
     this._url = url;
     this._dataType = dataType;
     // some old browsers don't support onload
-    this._legacy = !(this._xhr.onload === null);
+    this._legacy = !isDefined(this._xhr.onload);
 };
 
 chimXHR.prototype = {
@@ -141,7 +142,7 @@ chimXHR.prototype = {
     },
     /**
      *
-     * @param {Object} header - http request header options
+     * @param {Object} header - HTTP request header options
      */
     setHeader: function setHeader(header) {
         const self = this;
@@ -156,7 +157,7 @@ chimXHR.prototype = {
     },
     /**
      *
-     * @param {string} requestType - HTTP verb
+     * @param {string} requestType - HTTP action
      */
     openRequest: function openRequest(requestType) {
         this._xhr.open(requestType, this._url);
@@ -176,7 +177,7 @@ chimXHR.prototype = {
         this._xhr.send(data);
     },
     /**
-     * Fires a callback on successful response or error
+     * Fires a callback on successful response or error.
      *
      * @param {responseCallback} callback
      */
@@ -196,7 +197,7 @@ chimXHR.prototype = {
                     this.fail(callback);
                 }
             };
-            // if legacy, 'onreadystatechange' listener
+        // if legacy, 'onreadystatechange' listener
         } else {
             console.warn('You are using an old browser. Consider upgrading for improved support.');
             this._xhr.onreadystatechange = () => {
@@ -237,11 +238,10 @@ chimXHR.prototype = {
      * Sets the response type to the provided dataType parameter,
      * if none is provided it infers the response type from the
      * content type.
-     *
      */
     setResponseType: function setResponseType() {
-        const responseHeader = this._xhr.getResponseHeader(_CONTENT_TYPE);
-        this._responseType = this._dataType || findResponseType(responseHeader);
+        const contentType = this._xhr.getResponseHeader(_CONTENT_TYPE);
+        this._responseType = this._dataType || findResponseType(contentType);
     },
     /**
      * Processes the response text based on its type.
