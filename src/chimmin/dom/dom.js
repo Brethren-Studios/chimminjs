@@ -34,7 +34,7 @@ const chimDOM = function chimDOM(selector) {
     }
     // if HTMLElement
     else if (selector instanceof HTMLElement ||
-        selector.constructor.name === 'HTMLDocument'
+        selector.constructor.name === 'HTMLElement'
     ) {
         return new CHIMNode(selector);
     }
