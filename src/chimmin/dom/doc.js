@@ -1,5 +1,5 @@
 /**
- *
+ * Basic wrapper for an HTML document object.
  * @param doc
  * @constructor
  */
@@ -13,4 +13,4 @@ CHIMDoc.prototype = {
     }
 };
 
-module.exports = CHIMDoc;
+export default CHIMDoc;

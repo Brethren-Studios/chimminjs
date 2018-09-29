@@ -1,15 +1,13 @@
-const {
-    isString,
-} = require('../../util');
+import util from '../../util';
+import CHIMDoc from './doc';
+import CHIMNode from './node';
+import CHIMList from './list';
 
-const CHIMDoc = require('./doc');
-const CHIMNode = require('./node');
-const CHIMList = require('./list');
+const { isString } = util;
 
 /**
  * Public interface for DOM module, exposing a method
  * that uses a selector to construct a CHIM doc/node/list.
- *
  * @param selector
  * @returns {*}
  */
@@ -58,4 +56,4 @@ const chimDOM = function chimDOM(selector) {
     }
 };
 
-module.exports = chimDOM;
+export default chimDOM;

@@ -23,7 +23,7 @@ Download the source:
 
 *Download `src/`.*
 
-## Basic Useage Example ##
+## Basic Usage Example ##
 
 ChimminJS is perfect for simple pages with a single main element--like a form, simple interface, etc.
 
@@ -44,7 +44,7 @@ const input = chim('input'); // init chim element with selector
 input.applyCss('opacity', '1'); // apply CSS to element
 
 input.onKeyup((el) => { // handle events
-  console.log('User input detected.');
+    console.log('User input detected.');
 });
 ```
 
@@ -54,16 +54,26 @@ const getBtn = chim('#find-song');
 const postBtn = chim('#cool-song');
 
 getBtn.onClick((e) => {
-  chim.go.get('/that-one-song', (response) => {
-    console.log(response); // { title: 'Africa', artist: 'Toto' }
-  });
+    chim.go.get('/that-one-song', (response) => {
+        console.log(response); // { title: 'Africa', artist: 'Toto' }
+    });
 });
 
 postBtn.onClick((e) => {
-  // add data to request as object, array, or query string
-  chim.go.post('/add-to-playlist', { song: 'Replay by Iyaz' }, (response) => {
-    console.log(response); // 'Song added to playlist!'
-  });
+    // as an array of form elements
+    chim.go.post('/add-to-playlist', 
+        [
+            { name: 'title', value: 'Replay' }, 
+            { name: 'artist', value: 'Iyaz' }
+        ],
+        (response) => {
+            console.log(response) // 'Song added to playlist!'
+        });
+
+    // as an object
+    chim.go.post('/add-to-playlist', { title: 'Replay', artist: 'Iyaz' }, (response) => {
+        console.log(response); // 'Song added to playlist!'
+    });
 });
 ```
 

@@ -1,3 +1,5 @@
+const assert = chai.assert;
+
 /**
  * @typedef {Object} el
  * @property{Function} dispatchEvent
@@ -49,7 +51,7 @@ describe('CHIMDoc, CHIMNode, & CHIMList', () => {
         const chimNode = chim('div');
         assert.isDefined(chimNode._list);
         assert.isTrue(chimNode._list[0] instanceof HTMLElement);
-        done()
+        done();
     });
 
     it('modifies a CHIMList', (done) => {

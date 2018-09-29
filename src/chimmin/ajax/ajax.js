@@ -1,9 +1,10 @@
-const {
+import util from '../../util';
+import chimXHR from './xhr';
+
+const { 
     isFunction,
     isString
-} = require('../../util');
-
-const chimXHR = require('./xhr');
+} = util;
 
 /**
  * @callback responseCallback
@@ -13,18 +14,15 @@ const chimXHR = require('./xhr');
 /**
  * Required and optional arguments for chimAJAX
  * request validated and mapped to object.
- *
  * @typedef {Object} RequestArgs
  * @property {string} url
  * @property {*} [data]
  * @property {responseCallback} [callback]
  * @property {string} [dataType] - data type expected in response
- *
  */
 
 /**
  * Validates arguments and maps them to an object.
- *
  * @param {Array} args - URL, and optional data, callback, dataType
  * @returns {RequestArgs} - arguments object
  */
@@ -68,7 +66,6 @@ function handleArguments(args) {
 /**
  * Public interface for the AJAX module, exposing
  * HTTP methods GET, POST, & PUT.
- *
  * @type {Object}
  * @property {httpGet} get
  * @property {httpPost} post
@@ -79,7 +76,6 @@ const chimAJAX = {
      * Sends a GET request to the provided URL. If a
      * data parameter is included, serialized data is sent
      * along with the request.
-     *
      * @function httpGet
      * @param {...*} args - URL, [data, [callback, [dataType]]]
      * @returns {void}
@@ -103,7 +99,6 @@ const chimAJAX = {
      * Sends a POST request to the provided URL. If a
      * data parameter is included, serialized data is sent
      * along with the request in query parameter or JSON format.
-     *
      * @function httpPost
      * @param {...*} args - URL, [data, [callback, [dataType]]]
      * @returns {void}
@@ -133,7 +128,6 @@ const chimAJAX = {
     /**
      * Sends a PUT request to the provided URL. Data is serialized
      * and sent along with the request in JSON format.
-     *
      * @function httpPut
      * @param {...*} args - URL, data, [callback, [dataType]]
      * @returns {void}
@@ -166,4 +160,4 @@ const chimAJAX = {
     }
 };
 
-module.exports = chimAJAX;
+export default chimAJAX;

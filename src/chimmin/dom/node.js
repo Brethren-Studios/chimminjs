@@ -1,19 +1,19 @@
+import util from '../../util';
+
 const {
     isObject,
     isString,
     isDefined
-} = require('../../util');
+} = util;
 
 /**
  * A lightweight wrapper around an HTMLElement that
  * provides an interface for commonly used DOM manipulation methods.
- *
  * @typedef {Object} CHIMNode
  * @property {HTMLElement} _node
  */
 
 /**
- *
  * @param {HTMLElement} node - represents HTML node
  * @constructor
  */
@@ -27,7 +27,6 @@ CHIMNode.prototype = {
     /**
      * Appends this node to the node argument as
      * as the last child element.
-     *
      * @param {Object} el - parent element to which this node is appended
      */
     appendTo: function appendTo(el) {
@@ -53,7 +52,6 @@ CHIMNode.prototype = {
     },
     /**
      * Adds the class to this node / list of nodes.
-     *
      * @param {string} className
      */
     addClass: function addClass(className) {
@@ -65,7 +63,6 @@ CHIMNode.prototype = {
     },
     /**
      * Adds 1+ classes to this node.
-     *
      * @param {...string} args
      */
     addClasses: function addClasses(...args) {
@@ -79,7 +76,6 @@ CHIMNode.prototype = {
     },
     /**
      * Removes a class from this node.
-     *
      * @param {string} className
      */
     removeClass: function removeClass(className) {
@@ -92,7 +88,6 @@ CHIMNode.prototype = {
     /**
      * Adds or removes a class depending on the value
      * of the bool argument.
-     *
      * @param {string} className
      * @param {boolean} bool
      */
@@ -114,7 +109,6 @@ CHIMNode.prototype = {
     /**
      * Modifies the property of the node.
      * Only supports scalar properties (e.g. value, disabled, etc.).
-     *
      * @param {string} prop
      * @param {string|boolean|Number} value
      */
@@ -135,7 +129,6 @@ CHIMNode.prototype = {
     },
     /**
      * Applies the CSS to this node.
-     *
      * @param {string} prop
      * @param {string} value
      */
@@ -149,7 +142,6 @@ CHIMNode.prototype = {
     /**
      * Modifies the innerHTML of the node.
      * If no argument is supplied, returns innerHTML.
-     *
      * @param {string} [txt]
      * @returns {string|Array|undefined}
      */
@@ -169,7 +161,6 @@ CHIMNode.prototype = {
      * Modifies the value of an input element. If no
      * argument is supplied, returns the value. Does
      * not support NodeList.
-     *
      * @param {string} [text]
      * @returns {*}
      */
@@ -193,14 +184,12 @@ CHIMNode.prototype = {
 
     /**
      * Callback that fires after an event.
-     *
      * @callback eventHandler
      * @param {Object} e - event
      */
 
     /**
      * Adds a click listener to a node.
-     *
      * @param {eventHandler} handler
      * @param {Object} [options]
      */
@@ -209,7 +198,6 @@ CHIMNode.prototype = {
     },
     /**
      * Adds a keyup listener to a node.
-     *
      * @param {eventHandler} handler
      * @param {Object} [options]
      */
@@ -218,7 +206,6 @@ CHIMNode.prototype = {
     },
     /**
      * Adds a keydown listener to a node.
-     *
      * @param {eventHandler} handler
      * @param {Object} [options]
      */
@@ -227,7 +214,6 @@ CHIMNode.prototype = {
     },
     /**
      * Adds a keypress listener to a node.
-     *
      * @param {eventHandler} handler
      * @param {Object} [options]
      */
@@ -237,7 +223,6 @@ CHIMNode.prototype = {
     /**
      * Adds a submit listener to a node.
      * Used for form submission.
-     *
      * @param {eventHandler} handler
      * @param {Object} [options]
      */
@@ -246,4 +231,4 @@ CHIMNode.prototype = {
     }
 };
 
-module.exports = CHIMNode;
+export default CHIMNode;

@@ -1,13 +1,13 @@
+import util from '../../util';
+
 const {
     isFunction,
     isObject,
     isString
-} = require('../../util');
-
+} = util;
 
 /**
  * Adds a single param to the resulting list.
- *
  * @param {string} prefix - prefixes param for scalar representation of nested objects
  * @param {*} obj - data called on recursively to traverse all params
  * @param {addToParams} add - serializes and adds to result
@@ -43,7 +43,6 @@ function buildParams(prefix, obj, add) {
 /**
  * Separates data objects into logical scalar units
  * and serializes them as query parameters.
- *
  * @param {*} a - data object to serialize
  * @returns {string} - data in request params format
  */
@@ -89,4 +88,4 @@ function serialize(a) {
     return s.join('&');
 }
 
-module.exports = serialize;
+export default serialize;
