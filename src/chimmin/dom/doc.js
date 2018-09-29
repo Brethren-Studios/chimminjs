@@ -1,6 +1,6 @@
 /**
- *
- * @param doc
+ * Basic wrapper for an HTML document object.
+ * @param {object} doc
  * @constructor
  */
 const CHIMDoc = function(doc) {
@@ -13,4 +13,4 @@ CHIMDoc.prototype = {
     }
 };
 
-module.exports = CHIMDoc;
+export default CHIMDoc;

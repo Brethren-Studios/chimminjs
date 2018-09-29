@@ -1,7 +1,9 @@
 module.exports = {
     "env": {
+        "node": true,
         "browser": true,
-        "es6": true
+        "es6": true,
+        "mocha": true
     },
     "extends": "eslint:recommended",
     "parserOptions": {
@@ -27,6 +29,7 @@ module.exports = {
         "no-console": 0
     },
     "globals": {
-        "chim": true
+        "chim": true,
+        "chai": true
     }
 };

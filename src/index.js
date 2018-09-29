@@ -1,5 +1,5 @@
-const chimAJAX = require('./chimmin/ajax/ajax');
-const chimDOM = require('./chimmin/dom/dom');
+import chimAJAX from './chimmin/ajax/ajax';
+import chimDOM from './chimmin/dom/dom';
 
 const init = function init() {
     window.chim = function(selector) {
@@ -9,4 +9,3 @@ const init = function init() {
 };
 
 init();
-

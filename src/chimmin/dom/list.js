@@ -1,19 +1,24 @@
+import util from '../../util';
+
 const {
     isObject,
     isString,
     isDefined
-} = require('../../util');
+} = util;
+
+/**
+ * @typedef {function} EventHandler
+ * @param {object} e event
+ */
 
 /**
  * A lightweight wrapper around a NodeList or HTMLCollection that
  * provides an interface for commonly used DOM manipulation methods.
- *
- * @typedef {Object} CHIMList
- * @property {Array<HTMLElement>} _list
+ * @typedef {object} CHIMList
+ * @property {array<HTMLElement>} _list
  */
 
 /**
- *
  * @param {NodeList|HTMLCollection} list - represents HTML collection
  * @constructor
  */
@@ -34,7 +39,6 @@ CHIMList.prototype = {
     },
     /**
      * Adds the class to each node.
-     *
      * @param {string} className
      */
     addClass: function addClass(className) {
@@ -48,7 +52,6 @@ CHIMList.prototype = {
     },
     /**
      * Adds 1+ classes to each node.
-     *
      * @param {...string} args
      */
     addClasses: function addClasses(...args) {
@@ -67,7 +70,6 @@ CHIMList.prototype = {
     },
     /**
      * Removes a class from each node.
-     *
      * @param {string} className
      */
     removeClass: function removeClass(className) {
@@ -82,7 +84,6 @@ CHIMList.prototype = {
     /**
      * Adds or removes a class depending on the value
      * of the bool argument.
-     *
      * @param {string} className
      * @param {boolean} bool
      */
@@ -106,7 +107,6 @@ CHIMList.prototype = {
     /**
      * Modifies the properties of each node.
      * Only supports scalar properties (e.g. value, disabled, etc.).
-     *
      * @param {string} prop
      * @param {string|boolean|Number} value
      */
@@ -134,7 +134,6 @@ CHIMList.prototype = {
     },
     /**
      * Applies the CSS to this list of nodes.
-     *
      * @param {string} prop
      * @param {string} value
      */
@@ -150,9 +149,8 @@ CHIMList.prototype = {
     /**
      * Modifies the innerHTML of the list of nodes.
      * If no argument is supplied, returns innerHTML.
-     *
      * @param {string} [txt]
-     * @returns {string|Array|undefined}
+     * @returns {string|array|undefined}
      */
     text: function text(txt) {
         if (isObject(txt)) {
@@ -173,16 +171,14 @@ CHIMList.prototype = {
     },
     /**
      * Callback that fires after an event.
-     *
      * @callback eventHandler
-     * @param {Object} e - event
+     * @param {object} e - event
      */
 
     /**
      * Adds a click listener to a list of nodes.
-     *
-     * @param {eventHandler} handler
-     * @param {Object} [options]
+     * @param {EventHandler} handler
+     * @param {object} [options]
      */
     onClick: function onClick(handler, options) {
         this._list.forEach((el) => {
@@ -191,9 +187,8 @@ CHIMList.prototype = {
     },
     /**
      * Adds a keyup listener to a list of nodes.
-     *
-     * @param {eventHandler} handler
-     * @param {Object} [options]
+     * @param {EventHandler} handler
+     * @param {object} [options]
      */
     onKeyup: function onKeyup(handler, options) {
         this._list.forEach((el) => {
@@ -202,9 +197,8 @@ CHIMList.prototype = {
     },
     /**
      * Adds a keydown listener to a list of nodes.
-     *
-     * @param {eventHandler} handler
-     * @param {Object} [options]
+     * @param {EventHandler} handler
+     * @param {object} [options]
      */
     onKeydown: function onKeydown(handler, options) {
         this._list.forEach((el) => {
@@ -213,9 +207,8 @@ CHIMList.prototype = {
     },
     /**
      * Adds a keypress listener to a list of nodes.
-     *
-     * @param {eventHandler} handler
-     * @param {Object} [options]
+     * @param {EventHandler} handler
+     * @param {object} [options]
      */
     onKeypress: function onKeypress(handler, options) {
         this._list.forEach((el) => {
@@ -225,9 +218,8 @@ CHIMList.prototype = {
     /**
      * Adds a submit listener to a list of nodes.
      * Used for form submission.
-     *
-     * @param {eventHandler} handler
-     * @param {Object} [options]
+     * @param {EventHandler} handler
+     * @param {object} [options]
      */
     onSubmit: function onSubmit(handler, options) {
         this._list.forEach((el) => {
@@ -236,4 +228,4 @@ CHIMList.prototype = {
     }
 };
 
-module.exports = CHIMList;
+export default CHIMList;
