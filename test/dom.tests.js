@@ -1,7 +1,7 @@
 /**
- * @typedef {Object} el
- * @property{Function} dispatchEvent
- * @property {Function} [el.fireEvent]
+ * @typedef {object} el
+ * @property {function} dispatchEvent
+ * @property {function} [el.fireEvent]
  */
 function eventFire(el, eventType) {
     if (el.fireEvent) {
@@ -14,6 +14,8 @@ function eventFire(el, eventType) {
 }
 
 describe('CHIMDoc, CHIMNode, & CHIMList', () => {
+    const assert = chai.assert;
+
     after(() => {
         testStatus.text('Complete!');
     });
@@ -49,7 +51,7 @@ describe('CHIMDoc, CHIMNode, & CHIMList', () => {
         const chimNode = chim('div');
         assert.isDefined(chimNode._list);
         assert.isTrue(chimNode._list[0] instanceof HTMLElement);
-        done()
+        done();
     });
 
     it('modifies a CHIMList', (done) => {
@@ -82,7 +84,7 @@ describe('CHIMDoc, CHIMNode, & CHIMList', () => {
     it('modifies the styles of a CHIMNode', (done) => {
         testStatus.text('Modifying styles / displaying title and subtitle CHIMNodes...');
         const title = chim('#test-id-1');
-        title.applyCss('font-family', 'Rayman Adventures');
+        title.applyCss('font-family', 'Impact');
         title.applyCss('color', 'rgb(255, 187, 0)');
         title.applyCss('font-size', '75px');
 

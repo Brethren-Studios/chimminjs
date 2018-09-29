@@ -1,13 +1,13 @@
+import util from '../../util';
+import serialize from './serialize';
+
 const {
     isString,
     isDefined
-} = require('../../util');
-
-const serialize = require('./serialize');
+} = util;
 
 /**
  * XHR Spec:
- *
  * https://xhr.spec.whatwg.org
  */
 
@@ -28,7 +28,6 @@ const _APP = 'application',
 /**
  * Validates content type and returns the corresponding response type.
  * https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
- *
  * @param {string} contentType
  * @returns {string} - response type
  */
@@ -42,10 +41,10 @@ function findResponseType(contentType) {
             return _JSON;
             // binary file for download
         } else if (contentType.includes(_OCTET)) {
-            return _BLOB
+            return _BLOB;
             // *
         } else {
-            return _TEXT
+            return _TEXT;
         }
     }
     if (contentType.includes(_IMAGE) ||
@@ -61,7 +60,6 @@ function findResponseType(contentType) {
 /**
  * Validates response type and processes data accordingly.
  * https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType
- *
  * @param {string} type - response type
  * @param {string} data - unprocessed raw data
  * @returns {*}
@@ -102,11 +100,15 @@ function processResponse(type, data) {
 }
 
 /**
+ * @callback ResponseCallback
+ * @param {*} [body] - response body
+ */
+
+/**
  * CHIMAjax's very own XMLHttpRequest wrapper,
  * adding a simple interface and several helper methods.
- *
- * @typedef {Object} chimXHR
- * @property {Object} _xhr
+ * @typedef {object} chimXHR
+ * @property {object} _xhr
  * @property {string} _url
  * @property {string} _dataType
  * @property {boolean} _legacy - determines which event handler to use
@@ -129,7 +131,6 @@ const chimXHR = function chimXHR(url, dataType) {
 
 chimXHR.prototype = {
     /**
-     *
      * @param {*} data - data to send with the request as query params
      */
     addQueryParams: function addQueryParams(data) {
@@ -141,8 +142,7 @@ chimXHR.prototype = {
         }
     },
     /**
-     *
-     * @param {Object} header - HTTP request header options
+     * @param {object} header - HTTP request header options
      */
     setHeader: function setHeader(header) {
         const self = this;
@@ -156,7 +156,6 @@ chimXHR.prototype = {
         });
     },
     /**
-     *
      * @param {string} requestType - HTTP action
      */
     openRequest: function openRequest(requestType) {
@@ -165,10 +164,8 @@ chimXHR.prototype = {
     /**
      * Sends request with optional data parameter. If
      * data type is 'document', set the response type.
-     *
      * See: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/HTML_in_XMLHttpRequest
-     *
-     * @param {String} [data] - data to send as JSON with request
+     * @param {string} [data] - data to send as JSON with request
      */
     sendRequest: function sendRequest(data) {
         if (this._dataType === _DOC) {
@@ -178,8 +175,7 @@ chimXHR.prototype = {
     },
     /**
      * Fires a callback on successful response or error.
-     *
-     * @param {responseCallback} callback
+     * @param {ResponseCallback} callback
      */
     handleResponse: function handleResponse(callback) {
         const DONE = 4; // readyState 4 means request is done
@@ -199,7 +195,6 @@ chimXHR.prototype = {
             };
         // if legacy, 'onreadystatechange' listener
         } else {
-            console.warn('You are using an old browser. Consider upgrading for improved support.');
             this._xhr.onreadystatechange = () => {
                 if (this._xhr.readyState === DONE) {
                     if (this._xhr.status === OK) {
@@ -208,13 +203,12 @@ chimXHR.prototype = {
                         this.fail(callback);
                     }
                 }
-            }
+            };
         }
     },
     /**
      * On response success.
-     *
-     * @param {responseCallback} callback
+     * @param {ResponseCallback} callback
      */
     success: function success(callback) {
         this.setResponseType();
@@ -224,8 +218,7 @@ chimXHR.prototype = {
     },
     /**
      * On response fail.
-     *
-     * @param {responseCallback} callback
+     * @param {ResponseCallback} callback
      */
     fail: function fail(callback) {
         const { status, statusText } = this._xhr;
@@ -257,4 +250,4 @@ chimXHR.prototype = {
     }
 };
 
-module.exports = chimXHR;
+export default chimXHR;
