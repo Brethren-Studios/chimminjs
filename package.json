@@ -1,6 +1,6 @@
 {
-  "name": "chimminJS",
-  "version": "0.0.6",
+  "name": "chimminjs",
+  "version": "0.0.7",
   "description": "README",
   "main": "index.js",
   "scripts": {
@@ -9,15 +9,15 @@
   "author": "David Vorona",
   "license": "MIT",
   "dependencies": {
-    "@babel/plugin-proposal-object-rest-spread": "^7.0.0"
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.1.0",
-    "@babel/preset-env": "^7.1.0",
+    "@babel/core": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
     "babel-loader": "^8.0.2",
-    "eslint": "^5.6.0",
-    "uglifyjs-webpack-plugin": "^2.0.1",
-    "webpack": "^4.19.1",
-    "webpack-cli": "^3.1.0"
+    "eslint": "^5.16.0",
+    "uglifyjs-webpack-plugin": "^2.1.2",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
   }
 }

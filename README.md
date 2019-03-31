@@ -27,7 +27,6 @@ Download the source:
 
 ChimminJS is perfect for simple pages with a single main element--like a form, simple interface, etc.
 
-### DOM Manipulation ###
 ```
 <body>
   <div>
@@ -37,6 +36,8 @@ ChimminJS is perfect for simple pages with a single main element--like a form, s
   </div>
 </body>
 ```
+
+### DOM Manipulation ###
 
 ```javascript
 const input = chim('input'); // init chim element with selector
@@ -54,9 +55,26 @@ const getBtn = chim('#find-song');
 const postBtn = chim('#cool-song');
 
 getBtn.onClick((e) => {
+    // no query params
     chim.go.get('/that-one-song', (response) => {
-        console.log(response); // { title: 'Africa', artist: 'Toto' }
+        console.log(response); // { title: 'Africa', artist: 'Toto', lyrics: 'I heard the drums...' }
     });
+
+    // query param as an array of form elements
+    chim.go.get('/song', 
+        [
+            { name: 'title', value: 'Africa' }, 
+            { name: 'artist', value: 'Toto' }
+        ],
+        (response) => {
+            console.log(response) // { title: 'Africa', artist: 'Toto', lyrics: 'I heard the drums...' }
+        });
+
+    // query params as an object
+    chim.go.get('/song', { title: "Africa", artist: "Toto" }, (response) => {
+        console.log(response); // { title: 'Africa', artist: 'Toto', lyrics: 'I heard the drums...' }
+    });
+
 });
 
 postBtn.onClick((e) => {
